@@ -24,7 +24,7 @@ class Wordify(object):
 
     def _hash_generate(self):
         """
-        Implements the functions words_to_number(), all_wordifications() and number_to_words()
+        Generates dictionary of numpad mapping numbers to letters and another dictionary to map letters to numbers
         """
         self.numpadHash = {'2': ['A', 'B', 'C'], '3': ['D', 'E', 'F'], '4': ['G', 'H', 'I'],
                            '5': ['J', 'K', 'L'], '6': ['M', 'N', 'O'], '7': ['P', 'Q', 'R', 'S'],
