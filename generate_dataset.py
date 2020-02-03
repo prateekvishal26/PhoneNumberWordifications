@@ -68,6 +68,9 @@ class Dataset(object):
         self._generate_dataset()
 
     def _read_file_data(self):
+        """
+        Reads data from the words.txt file and stores it in a words list if 2 <= length of word <= 10.
+        """
         words_file = open("words.txt", "r")
         lines = words_file.readlines()
         for line in lines:
@@ -76,6 +79,9 @@ class Dataset(object):
                 self.wordsList.append(data.upper())
 
     def _generate_dataset(self):
+        """
+        Builds the Trie containing the dictionary of English words from the words list.
+        """
         for word in self.wordsList:
             self.wordsDataset.insert(word)
 

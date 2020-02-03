@@ -23,6 +23,9 @@ class Wordify(object):
         self.maximumHyph = 3
 
     def _hash_generate(self):
+        """
+        Implements the functions words_to_number(), all_wordifications() and number_to_words()
+        """
         self.numpadHash = {'2': ['A', 'B', 'C'], '3': ['D', 'E', 'F'], '4': ['G', 'H', 'I'],
                            '5': ['J', 'K', 'L'], '6': ['M', 'N', 'O'], '7': ['P', 'Q', 'R', 'S'],
                            '8': ['T', 'U', 'V'], '9': ['W', 'X', 'Y', 'Z']}
@@ -31,6 +34,9 @@ class Wordify(object):
                 self.letterHash[letter] = str(n)
 
     def _check_valid_number(self, number):
+        """
+        Returns True if number is a valid US phone number(11 digit long)
+        """
         number = self._de_hyphenate_number(number)
         length = 0
         for ch in number:
@@ -42,6 +48,9 @@ class Wordify(object):
             return False
 
     def _hyphenate_number(self, number):
+        """
+        Returns the number in the form X-XXX-XXX-XXXX
+        """
         number = self._de_hyphenate_number(number)
         number = number[0] + self.hyphen + number[1:]
         number = number[0:5] + self.hyphen + number[5:]
@@ -49,10 +58,16 @@ class Wordify(object):
         return number
 
     def _de_hyphenate_number(self, number):
+        """
+        Returns the number as a string without hyphens
+        """
         number = number.replace(self.hyphen, "")
         return number
 
     def _get_string(self, l):
+        """
+        Returns the string from the given list
+        """
         str = ""
         for i in l:
             if i == '\0':
@@ -60,6 +75,9 @@ class Wordify(object):
             str += i
 
     def _get_all_combinations_recurse(self, number, comb, i, j, n):
+        """
+        Recursively runs to append to the list of all possible combinations of the given number
+        """
         if i == n:
             comb[j] = '\0'
             comb_str = self._get_string(comb)
@@ -72,13 +90,20 @@ class Wordify(object):
         self._get_all_combinations_recurse(number, comb, i + 1, j + 2, n)
 
     def _get_all_combinations(self, number):
+        """
+        Gets all possible combinations of the given number
+        """
         n = len(number)
         temp = [0] * (2 * n)
         temp[0] = number[0]
+        self.allCombinations = list()
         self._get_all_combinations_recurse(number, temp, 1, 1, n)
         return
 
     def _get_filtered_combinations(self):
+        """
+        Gets all possible combinations of the given number where maximum hyphens are 3
+        """
         filtered_combinations = list()
         for comb in self.allCombinations:
             if comb.count('-') <= self.maximumHyph:
@@ -86,11 +111,13 @@ class Wordify(object):
         return filtered_combinations
 
     def _wordify_number(self, number):
+        """
+        Return the wordified number for the given combination
+        """
         substr_list = number.split(self.hyphen)
         wordified_list = list()
         for substr in substr_list:
             wordified_list.append(self._wordify(substr))
-        # print(wordified_list)
         all_combinations = list(itertools.product(*wordified_list))
         all_wordified_combinations = list()
         for wordified_combinations in all_combinations:
@@ -98,6 +125,9 @@ class Wordify(object):
         return all_wordified_combinations
 
     def _wordify(self, number):
+        """
+        Return the wordified number given a substring. Eg: "7246837" returns "PAINTER"
+        """
         if number not in self.allWords:
             self.allWords[number] = list()
             words = list()
@@ -126,6 +156,9 @@ class Wordify(object):
         return tuple(self.allWords[number])
 
     def words_to_number(self, word):
+        """
+        Returns the number given a wordified number as input
+        """
         number = ""
         for ch in word:
             if ch in self.letterHash:
@@ -138,6 +171,9 @@ class Wordify(object):
             return "Invalid Number"
 
     def number_to_words(self, number):
+        """
+        Returns the wordified number with longest word that can be obtained
+        """
         list_of_words = dict()
         words = list()
         if self._check_valid_number(number):
@@ -169,6 +205,9 @@ class Wordify(object):
         return list_of_words[max(list_of_words.keys())]
 
     def all_wordifications(self, number):
+        """
+        Returns all possible wordifications of given number
+        """
         if self._check_valid_number(number):
             number = self._de_hyphenate_number(number)
         else:
