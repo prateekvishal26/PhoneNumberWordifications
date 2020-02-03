@@ -159,6 +159,8 @@ class Wordify(object):
         """
         Returns the number given a wordified number as input
         """
+        if len(word) == 0:
+            return "Invalid Input"
         number = ""
         for ch in word:
             if ch in self.letterHash:
@@ -174,6 +176,8 @@ class Wordify(object):
         """
         Returns the wordified number with longest word that can be obtained
         """
+        if len(number) == 0:
+            return "Invalid Input"
         list_of_words = dict()
         words = list()
         if self._check_valid_number(number):
@@ -208,6 +212,8 @@ class Wordify(object):
         """
         Returns all possible wordifications of given number
         """
+        if len(number) == 0:
+            return "Invalid Input"
         if self._check_valid_number(number):
             number = self._de_hyphenate_number(number)
         else:
